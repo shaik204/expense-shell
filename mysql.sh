@@ -37,7 +37,7 @@ CHECK_ROOT(){
 echo -e "$G script started executing at : $(date)" | tee -a $LOG_FILE
 CHECK_ROOT
       dnf install mysql-server -y
-      VALIDATE $? "enabled mysql server"
+      VALIDATE $? "Installing mysql server"
 
         systemctl enable mysqld
         VALIDATE $? "enabled mysql server"
