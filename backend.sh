@@ -1,4 +1,4 @@
-#!/bash/bin
+#!/bin/bash
 
 LOGS_FOLDER="/var/log/expense"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
@@ -48,11 +48,11 @@ VALIDATE $? "installed nodejs "
 
 id expense &>>$LOG_FILE
 if [ $? -ne 0 ]; then
-    echo -e "expense user doesnt exist...$G creating $N"
+    echo -e "expense user doesnt exist...$G creating $N" | tee -a $LOG_FILE
     useradd expense &>>$LOG_FILE
     VALIDATE $? "creating expense user"
 else
-    echo -e "expense user already exists ...$Y skipping $N"
+    echo -e "expense user already exists ...$Y skipping $N" | tee -a $LOG_FILE
 fi   
 
 mkdir -p /app
@@ -62,5 +62,8 @@ curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expen
 VALIDATE $? "downloading backend app code using curl command" 
 
 cd /app
+rm -rf /app/*     # remove the existing code
+VALIDATE $? "removing old application files"
+
 unzip /tmp/backend.zip &>>$LOG_FILE
 VALIDATE $? "Extracting backend application code" 
