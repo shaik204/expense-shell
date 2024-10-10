@@ -52,3 +52,8 @@ CHECK_ROOT
     else
         echo -e "MYSQL root password is already setup...$Y skipping $N " | tee -a $LOG_FILE
     fi  
+
+
+    
+
+   
