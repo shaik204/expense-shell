@@ -75,7 +75,7 @@ cp /home/ec2-user/expense-shell/backend.service /etc/systemd/system/backend.serv
 dnf install mysql -y &>>$LOG_FILE
 VALIDATE $? "Installing MYSQL client"
 
-mysql -h MYSQL.dreamsdelight.online -uroot -pExpenseApp@1 < /app/schema/backend.sql &>>$LOG_FILE
+mysql -h mysql.dreamsdelight.online -uroot -pExpenseApp@1 < /app/schema/backend.sql &>>$LOG_FILE
 VALIDATE $? "schema loading is success"
 
 systemctl daemon-reload &>>$LOG_FILE
@@ -84,5 +84,5 @@ VALIDATE $? "daemon reload"
 systemctl enable backend &>>$LOG_FILE
 VALIDATE $? "enabled backend"
 
- systemctl restart backend &>>$LOG_FILE
- VALIDATE $? "restarted backend"
+systemctl restart backend &>>$LOG_FILE
+VALIDATE $? "restarted backend"
