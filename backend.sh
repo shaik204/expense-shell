@@ -69,5 +69,5 @@ unzip /tmp/backend.zip &>>$LOG_FILE
 VALIDATE $? "Extracting backend application code" 
 
 npm install &>>$LOG_FILE 
-echo -e "$G Current working directory: $(pwd) $N" | tee -a $LOG_FILE
-#cp /home/ec2-user/expense-shell/backend.service /etc/systemd/system/backend.service
+
+cp /home/ec2-user/expense-shell/backend.service /etc/systemd/system/backend.service
