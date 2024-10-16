@@ -40,7 +40,22 @@ CHECK_ROOT
 dnf install nginx -y &>>$LOG_FILE
 VALIDATE $? "Installed nginx succeeded"
 
-systemctl enable nginx  
+systemctl enable nginx &>>$LOG_FILE
+VALIDATE $? "enabling nginx"
 
-systemctl start nginx  
+systemctl start nginx  &>>$LOG_FILE
+VALIDATE $? "starting nginx"
+ 
+rm -rf /usr/share/nginx/html/*
+VALIDATE $? "removing default website" &>>$LOG_FILE
+
+#downloading frontend code
+curl -o /tmp/frontend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
+VALIDATE $? "downloading frontend code"
+
+#extracting frontend content
+cd /usr/share/nginx/html
+unzip /tmp/frontend.zip &>>$LOG_FILE
+
+systemctl restart nginx
 
