@@ -5,6 +5,8 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 TIME_STAMP=$(date +%Y+%m+%d+%H+%M+%s)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME-$TIME_STAMP.log"
 mkdir -p "$LOGS_FOLDER"
+  MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD before running}"
+   MYSQL_HOST="${MYSQL_HOST:-mysql.example.com}"
 
 
 R="\e[31m"
@@ -75,7 +77,7 @@ cp /home/ec2-user/expense-shell/backend.service /etc/systemd/system/backend.serv
 dnf install mysql -y &>>$LOG_FILE
 VALIDATE $? "Installing MYSQL client"
 
-mysql -h mysql.dreamsdelight.online -uroot -pExpenseApp@1 < /app/schema/backend.sql &>>$LOG_FILE
+mysql -h ${MYSQL_HOST} -uroot -p"${MYSQL_ROOT_PASSWORD}" < /app/schema/backend.sql &>>$LOG_FILE
 VALIDATE $? "schema loading is success"
 
 systemctl daemon-reload &>>$LOG_FILE
