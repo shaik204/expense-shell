@@ -5,6 +5,8 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 TIME_STAMP=$(date +%Y+%m+%d+%H+%M+%s)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME-$TIME_STAMP.log"
 mkdir -p "$LOGS_FOLDER"
+MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD before running}"
+MYSQL_HOST="${MYSQL_HOST:-mysql.example.com}"
 
 
 R="\e[31m"
@@ -44,10 +46,10 @@ CHECK_ROOT
 
         systemctl start mysqld
         VALIDATE $? "started mysql server"
-    mysql -h mysql.dreamsdelight.online -u root -pExpenseApp@1 -e 'show databases;' &>>$LOG_FILE
+   mysql -h ${MYSQL_HOST} -u root -p"${MYSQL_ROOT_PASSWORD}" -e 'show databases;' &>>$LOG_FILE
     if [ $? -ne 0 ]; then
         echo "MYSQL root password is not setup,setting now" &>>$LOG_FILE
-        mysql_secure_installation --set-root-pass ExpenseApp@1
+        mysql_secure_installation --set-root-pass "${MYSQL_ROOT_PASSWORD}"
         VALIDATE $? "Setting up root password"
     else
         echo -e "MYSQL root password is already setup...$Y skipping $N " | tee -a $LOG_FILE
