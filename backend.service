@@ -5,7 +5,7 @@ Description=Backend Service
 
 [Service]
 User=expense
-Environment="DB_HOST=mysql.dreamsdelight.online"
+Environment="DB_HOST=mysql.example.com"
 ExecStart=/bin/node /app/index.js
 SyslogIdentifier=backend
 
